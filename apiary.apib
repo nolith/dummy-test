@@ -1,0 +1,73 @@
+FORMAT: 1A
+
+# Dummy Test
+Calibration Machine API is a sample application for automating the tooling change operation.
+
+# Group Machine Calibration
+**Machine Calibration API** it's all about publishing machine parameters and measurements and getting back new machineparameters.
+
+## Calibration [/calibration]
+### List all Calibration [GET]
++ Response 200 (application/json)
+
+        [{
+            "id": 1,
+            "operator": "Gianni",
+            "part_number": "A123",
+            "machine_parameters": [1200.2345, 0.0021, 13.7, 270],
+            "geometrical_dimension": [134.23, 0.35],
+            "result": "recalibrate",
+            "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]
+        },
+        {
+            "id": 2,
+            "operator": "Gianni",
+            "part_number": "A123",
+            "machine_parameters": [1200.2500, 0.0024, 13.7, 270],
+            "geometrical_dimension": [134.33, 0.38],
+            "result": "ok",
+            "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]
+        }]
+
+### Create a Calibration [POST]
++ Request (application/json)
+
+        {
+            "operator": "Gianni",
+            "part_number": "A123",
+            "machine_parameters": [1200.2500, 0.0024, 13.7, 270],
+            "geometrical_dimension": [134.33, 0.38],
+        }
+
++ Response 201 (application/json)
+
+        {
+            "id": 3,
+            "operator": "Gianni",
+            "part_number": "A123",
+            "machine_parameters": [1200.2500, 0.0024, 13.7, 270],
+            "geometrical_dimension": [134.33, 0.38],
+            "result": "ok",
+            "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]
+        }
+
+## Machine Calibration [/calibration/{id}]
+A single Calibration object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Calibration to perform action with. Has example value.
+
+### Retrieve a Note [GET]
++ Response 200 (application/json)
+
+    + Body
+
+            {   
+                "id": 1,
+                "operator": "Gianni",
+                "part_number": "A123",
+                "machine_parameters": [1200.2345, 0.0021, 13.7, 270],
+                "geometrical_dimension": [134.23, 0.35],
+                "result": "recalibrate",
+                "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]
+            }
