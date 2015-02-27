@@ -49,13 +49,21 @@ app.get('/calibrations/:id', function(req, res) {
 
 app.post('/calibrations', function(req, res) {
   console.log(req.body);
-  if(!req.body.hasOwnProperty('operator') || !req.body.hasOwnProperty('part_number')) {
+  if( !req.body.hasOwnProperty('operator') ||
+      !req.body.hasOwnProperty('part_number') ||
+      !req.body.hasOwnProperty('geometrical_dimension') ||
+      !req.body.hasOwnProperty('machine_parameters') ||
+      !Array.isArray(req.body.machine_parameters) ||
+      !Array.isArray(req.body.geometrical_dimension) ||
+      req.body.machine_parameters.length != 4 ||
+      req.body.geometrical_dimension.length != 2 ) {
+
     res.statusCode = 400;
     return res.send('Error 400: Post syntax incorrect.');
   }
 
   var newCalibration = {
-    id: calibrations.length,
+    id: calibrations.length + 1,
     operator: req.body.operator,
     part_number : req.body.part_number,
     machine_parameters: req.body.machine_parameters,
