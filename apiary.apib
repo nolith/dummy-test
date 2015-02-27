@@ -6,7 +6,7 @@ HOST: http://pacific-shore-4503.herokuapp.com
 Calibration Machine API is a sample application for automating the tooling change operation.
 
 # Group Machine Calibration
-**Machine Calibration API** it's all about publishing machine parameters and measurements and getting back new machineparameters.
+**Machine Calibration API** it's all about publishing machine parameters and measurements and getting back new machine parameters.
 
 ## Calibration [/calibrations]
 ### List all Calibration [GET]
@@ -32,6 +32,11 @@ Calibration Machine API is a sample application for automating the tooling chang
         }]
 
 ### Create a Calibration [POST]
+Please note that the returned resource will also include _result_ and _suggested\_parameters_.
+
+* result: can be "ok" or "recalibrate"
+* suggested_parameter: this are the new _machine\_parameter_. In case of "ok" result, this will be the provided values.
+
 + Request (application/json)
 
         {
@@ -54,7 +59,7 @@ Calibration Machine API is a sample application for automating the tooling chang
         }
 
 ## Machine Calibration [/calibrations/{id}]
-A single Calibration object with all its details
+A single Calibration object with all its details.
 
 + Parameters
     + id (required, number, `1`) ... Numeric `id` of the Calibration to perform action with. Has example value.
