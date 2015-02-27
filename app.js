@@ -29,6 +29,10 @@ app.use(bodyParser.json());
 //logging
 app.use(morgan('dev'))
 
+app.get('/', function(req, res) {
+    res.send("Dummy Test");
+});
+
 app.get('/calibrations', function(req, res) {
   res.json(calibrations);
 });
