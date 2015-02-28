@@ -6,7 +6,10 @@ HOST: http://pacific-shore-4503.herokuapp.com
 Calibration Machine API is a sample application for automating the tooling change operation.
 
 # Group Machine Calibration
-**Machine Calibration API** it's all about publishing machine parameters and measurements and getting back new machine parameters.
+**Machine Calibration API** it's all about publishing machine parameters with
+measurements and tolerances.
+If the _geometrical\_dimension_ doesn't matches the _tolerances_ the system will
+ provide some _suggested\_parameters.
 
 ## Calibration [/calibrations]
 ### List all Calibration [GET]
@@ -48,7 +51,7 @@ Calibration Machine API is a sample application for automating the tooling chang
 Please note that the returned resource will also include _result_ and _suggested\_parameters_.
 
 * result: can be "ok" or "recalibrate"
-* suggested_parameter: this are the new _machine\_parameter_. In case of "ok" result, this will be the provided values.
+* suggested_parameters: this are the new _machine\_parameters_. In case of "ok" result, this will be the provided values.
 
 + Request (application/json)
 
@@ -88,18 +91,21 @@ A single Calibration object with all its details.
 ### Retrieve a Calibration [GET]
 + Response 200 (application/json)
 
-    + Body
-
-            {
-                "id": 1,
-                "operator": "Gianni",
-                "part_number": "A123",
-                "machine_parameters": [1200.2345, 0.0021, 13.7, 270],
-                "tolerances": [
-                  { "min": 134.30, "max": 134.35 },
-                  { "min": 0.37, "max": 0.40 }
-                ],
-                "geometrical_dimension": [134.23, 0.35],
-                "result": "recalibrate",
-                "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]
-            }
+        {
+            "id": 1,
+            "operator": "Gianni",
+            "part_number": "A123",
+            "machine_parameters": [1200.2345, 0.0021, 13.7, 270],
+            "tolerances": [
+              { "min": 134.30, "max": 134.35 },
+              { "min": 0.37, "max": 0.40 }
+            ],
+            "geometrical_dimension": [134.23, 0.35],
+            "result": "recalibrate",
+            "suggested_parameters": [
+              1200.3295,
+              0.0030499999999999885,
+              13.735,
+              270.00035
+            ]
+        }
