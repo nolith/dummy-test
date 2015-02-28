@@ -17,15 +17,28 @@ Calibration Machine API is a sample application for automating the tooling chang
             "operator": "Gianni",
             "part_number": "A123",
             "machine_parameters": [1200.2345, 0.0021, 13.7, 270],
+            "tolerances": [
+              { "min": 134.30, "max": 134.35 },
+              { "min": 0.37, "max": 0.40 }
+            ],
             "geometrical_dimension": [134.23, 0.35],
             "result": "recalibrate",
-            "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]
+            "suggested_parameters": [
+              1200.3295,
+              0.0030499999999999885,
+              13.735,
+              270.00035
+            ]
         },
         {
             "id": 2,
             "operator": "Gianni",
             "part_number": "A123",
             "machine_parameters": [1200.2500, 0.0024, 13.7, 270],
+            "tolerances": [
+              { "min": 134.30, "max": 134.35 },
+              { "min": 0.37, "max": 0.40 }
+            ],
             "geometrical_dimension": [134.33, 0.38],
             "result": "ok",
             "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]
@@ -43,6 +56,10 @@ Please note that the returned resource will also include _result_ and _suggested
             "operator": "Gianni",
             "part_number": "A123",
             "machine_parameters": [1200.2500, 0.0024, 13.7, 270],
+            "tolerances": [
+              { "min": 134.30, "max": 134.35 },
+              { "min": 0.37, "max": 0.40 }
+            ],
             "geometrical_dimension": [134.33, 0.38]
         }
 
@@ -53,6 +70,10 @@ Please note that the returned resource will also include _result_ and _suggested
             "operator": "Gianni",
             "part_number": "A123",
             "machine_parameters": [1200.2500, 0.0024, 13.7, 270],
+            "tolerances": [
+              { "min": 134.30, "max": 134.35 },
+              { "min": 0.37, "max": 0.40 }
+            ],
             "geometrical_dimension": [134.33, 0.38],
             "result": "ok",
             "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]
@@ -74,6 +95,10 @@ A single Calibration object with all its details.
                 "operator": "Gianni",
                 "part_number": "A123",
                 "machine_parameters": [1200.2345, 0.0021, 13.7, 270],
+                "tolerances": [
+                  { "min": 134.30, "max": 134.35 },
+                  { "min": 0.37, "max": 0.40 }
+                ],
                 "geometrical_dimension": [134.23, 0.35],
                 "result": "recalibrate",
                 "suggested_parameters": [1200.2500, 0.0024, 13.7, 270]

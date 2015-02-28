@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
@@ -9,15 +10,28 @@ var calibrations = [
   operator: "Gianni",
   part_number: "123",
   machine_parameters: [1200.2345, 0.0021, 13.7, 270],
+  tolerances: [
+    { min: 134.30, max: 134.35 },
+    { min: 0.37, max: 0.40 }
+  ],
   geometrical_dimension: [134.23, 0.35],
   result: "recalibrate",
-  suggested_parameters: [1200.2500, 0.0024, 13.7, 270]
+  suggested_parameters: [
+    1200.3295,
+    0.0030499999999999885,
+    13.735,
+    270.00035
+  ]
 },
 {
   id: 2,
   operator: "Gianni",
   part_number: "123",
   machine_parameters: [1200.2500, 0.0024, 13.7, 270],
+  tolerances: [
+    { min: 134.30, max: 134.35 },
+    { min: 0.37, max: 0.40 }
+  ],
   geometrical_dimension: [134.33, 0.38],
   result: "ok",
   suggested_parameters: [1200.2500, 0.0024, 13.7, 270]
@@ -53,10 +67,13 @@ app.post('/calibrations', function(req, res) {
       !req.body.hasOwnProperty('part_number') ||
       !req.body.hasOwnProperty('geometrical_dimension') ||
       !req.body.hasOwnProperty('machine_parameters') ||
+      !req.body.hasOwnProperty('tolerances') ||
       !Array.isArray(req.body.machine_parameters) ||
       !Array.isArray(req.body.geometrical_dimension) ||
+      !Array.isArray(req.body.tolerances) ||
       req.body.machine_parameters.length != 4 ||
-      req.body.geometrical_dimension.length != 2 ) {
+      req.body.geometrical_dimension.length != 2 ||
+      req.body.tolerances.length != 2) {
 
     res.statusCode = 400;
     return res.send('Error 400: Post syntax incorrect.');
@@ -67,10 +84,35 @@ app.post('/calibrations', function(req, res) {
     operator: req.body.operator,
     part_number : req.body.part_number,
     machine_parameters: req.body.machine_parameters,
+    tolerances: req.body.tolerances,
     geometrical_dimension: req.body.geometrical_dimension,
     result: "ok",
-    suggested_parameters: req.body.machine_parameters
+    suggested_parameters: _.clone(req.body.machine_parameters)
   };
+
+  for(i = 0; i < newCalibration.geometrical_dimension.length; i++) {
+    var t = newCalibration.tolerances[i];
+    var dim = newCalibration.geometrical_dimension[i];
+
+    if (_.isPlainObject(t) &&
+        _.isNumber(t.min) && _.isNumber(t.max) &&
+        _.isNumber(dim)) {
+
+      console.log("Checking %d <= %d <= %d", t.min, dim, t.max);
+      if (dim < t.min || dim > t.max) {
+        console.log("-> recalibrate");
+        newCalibration.result = "recalibrate";
+        var baseIdx = (i%2)*2;
+        var reference = (t.min + t.max) / 2.0;
+        newCalibration.suggested_parameters[baseIdx] += reference - dim
+        newCalibration.suggested_parameters[baseIdx+1] += (reference - dim) / 100.0
+      }
+    } else {
+      res.statusCode = 400;
+      return res.send('Error 400: Post syntax incorrect.');
+    }
+
+  }
 
   calibrations.push(newCalibration);
   res.json(newCalibration);
