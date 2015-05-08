@@ -6,7 +6,7 @@ var app = express();
 
 var calibrations = [
 {
-  id: 1,
+  id: 0,
   operator: "Gianni",
   part_number: "123",
   machine_parameters: [1200.2345, 0.0021, 13.7, 270],
@@ -24,7 +24,7 @@ var calibrations = [
   ]
 },
 {
-  id: 2,
+  id: 1,
   operator: "Gianni",
   part_number: "123",
   machine_parameters: [1200.2500, 0.0024, 13.7, 270],
@@ -42,6 +42,13 @@ app.use(bodyParser.json());
 
 //logging
 app.use(morgan('dev'))
+
+//CORS
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.get('/', function(req, res) {
     res.send("Dummy Test");
@@ -80,7 +87,7 @@ app.post('/calibrations', function(req, res) {
   }
 
   var newCalibration = {
-    id: calibrations.length + 1,
+    id: calibrations.length,
     operator: req.body.operator,
     part_number : req.body.part_number,
     machine_parameters: req.body.machine_parameters,
